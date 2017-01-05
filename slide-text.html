@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<!-- Taruh Script CSS dibawah sini -->
+	<link href="tpslider-testimoni.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<div class="boxx">
+  <div class="btn-bar">
+    <div id="buttons">
+      <a id="prev" href="#">&lt;Prev</a>-<a id="next" href="#">Next&gt;</a>
+    </div>
+  </div>
+  <div id="slides">
+    <ul>
+      <li class="slide">Syukuri apa yang ada hidup ini indah jika saling menghargai satu sama lain.
+        <div class="authr"><a href="http://www.tukarpengetahuan.com">tukarpengetahuan.com</a></div>
+      </li>
+      <li class="slide">Mengeluh bukanlah solusi terbaik, hadapai masalah dengan senyum.
+        <div class="authr"><a href="http://www.tukarpengetahuan.com">tukarpengetahuan.com</a></div>
+      </li>
+      <li class="slide">Kaya bukan berarti miskin dan miskin bukan berarti kaya.
+        <div class="authr"><a href="http://www.tukarpengetahuan.com">tukarpengetahuan.com</a></div>
+      </li>
+      <li class="slide">Belajar bisa dari mana saja tidak mesti dari sekolah.
+        <div class="authr"><a href="http://www.tukarpengetahuan.com">tukarpengetahuan.com</a></div>
+      </li>
+      <li class="slide">Inspirasi datang dikala pikiran kita selalu positif.
+        <div class="authr"><a href="http://www.tukarpengetahuan.com">tukarpengetahuan.com</a></div>
+      </li>
+      <li class="slide">Bekerja sunguh-sungguh akan menuai hasil yang membahagiakan.
+        <div class="authr"><a href="http://www.tukarpengetahuan.com">tukarpengetahuan.com</a></div>
+      </li>
+      <li class="slide">Jangan menyerah dengan keadaan, bangkit dan semangat.
+        <div class="authr"><a href="http://www.tukarpengetahuan.com">tukarpengetahuan.com</a></div>
+      </li>
+      <li class="slide">Menjadi bawahan yang dipercaya itu sulit tapi lebih sulit menjadi atasan yang bertanggung jawab
+        <div class="authr"><a href="http://www.tukarpengetahuan.com">tukarpengetahuan.com</a></div>
+      </li>
+    </ul>
+    <i>Created by iwan prasetiyo - www.tukarpengetahuan.com</i>
+  </div>
+</div>
+
+<!-- Taruh Script Jquery dibawah sini -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script>
+$(document).ready(function () {
+    //rotation speed and timer
+    var speed = 5000;
+    var run = setInterval(rotate, speed);
+    var slides = $('.slide');
+    var container = $('#slides ul');
+    var elm = container.find(':first-child').prop("tagName");
+    var item_width = container.width();
+    var previous = 'prev'; //id of previous button
+    var next = 'next'; //id of next button
+    slides.width(item_width); //set the slides to the correct pixel width
+    container.parent().width(item_width);
+    container.width(slides.length * item_width); //set the slides container to the correct total width
+    container.find(elm + ':first').before(container.find(elm + ':last'));
+    resetSlides();
+	
+	$( window ).resize(function() {
+	  var box = $('.boxx');
+	  var box_width = box.width();
+	  $('#slides').css({'width': box_width});
+	  $('#slides ul,.slide').css({'width': box_width});
+	  resetSlides();
+	  location.reload();
+	});
+	
+    //if user clicked on prev button
+    $('#buttons a').click(function (e) {
+        //slide the item
+        if (container.is(':animated')) {
+            return false;
+        }
+        if (e.target.id == previous) {
+            container.stop().animate({
+                'left': 0
+            }, 400, function () {
+                container.find(elm + ':first').before(container.find(elm + ':last'));
+                resetSlides();
+            });
+        }
+        if (e.target.id == next) {
+            container.stop().animate({
+                'left': item_width * -2
+            }, 400, function () {
+                container.find(elm + ':last').after(container.find(elm + ':first'));
+                resetSlides();
+            });
+        }
+        //cancel the link behavior            
+        return false;
+    });
+    //if mouse hover, pause the auto rotation, otherwise rotate it    
+    container.parent().mouseenter(function () {
+        clearInterval(run);
+    }).mouseleave(function () {
+        run = setInterval(rotate, speed);
+    });
+    function resetSlides() {
+        //and adjust the container so current is in the frame
+        container.css({
+            'left': -1 * item_width
+        });
+    }
+});
+//a simple function to click next link
+//a timer will call this function, and the rotation will begin
+function rotate() {
+    $('#next').click();
+}
+</script>
+
+</body>
+</html>
